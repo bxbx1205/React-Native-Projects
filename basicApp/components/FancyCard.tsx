@@ -44,9 +44,7 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     cardElevated: {
-        // Android elevation
         elevation: 4,
-        // iOS shadow
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.15,
