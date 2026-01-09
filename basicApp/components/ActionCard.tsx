@@ -7,7 +7,7 @@ export default function ActionCard() {
     }
     return (
         <View style={styles.container}>
-            <Text style={styles.headingText}>Niggas in Mumbai</Text>
+            <Text style={styles.headingText}>night in Mumbai</Text>
             <View style={styles.card}>
                 <View style={styles.headerContainer}>
                     <Text style={styles.headerText}>A stylish evening</Text>
