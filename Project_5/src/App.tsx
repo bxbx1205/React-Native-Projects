@@ -2,12 +2,12 @@ import ReactNativeHapticFeedback from "react-native-haptic-feedback";
 import { StyleSheet, Text, View, Image, ImageSourcePropType, Pressable } from 'react-native'
 import React, { PropsWithChildren, useState } from 'react'
 
-import DiceOne from '../assests/One.png'
-import DiceTwo from '../assests/Two.png'
-import DiceThree from '../assests/Three.png'
-import DiceFour from '../assests/Four.png'
-import DiceFive from '../assests/Five.png'
-import DiceSix from '../assests/Six.png'
+import DiceOne from '../assets/One.png'
+import DiceTwo from '../assets/Two.png'
+import DiceThree from '../assets/Three.png'
+import DiceFour from '../assets/Four.png'
+import DiceFive from '../assets/Five.png'
+import DiceSix from '../assets/Six.png'
 
 type DiceProps = PropsWithChildren<{
   imageUrl: ImageSourcePropType
@@ -22,7 +22,11 @@ const Dice = ({ imageUrl }: DiceProps): React.ReactElement => {
 }
 
 export default function App(): React.ReactElement {
-  const [diceImage, setDiceImage] = useState<ImageSourcePropType>(DiceFive)
+  // Fix: Randomize initial dice face
+  const diceImages = [DiceOne, DiceTwo, DiceThree, DiceFour, DiceFive, DiceSix];
+  const [diceImage, setDiceImage] = useState<ImageSourcePropType>(
+    diceImages[Math.floor(Math.random() * 6)]
+  );
 
   const hapticOptions = {
     enableVibrateFallback: true,
@@ -30,40 +34,25 @@ export default function App(): React.ReactElement {
   };
 
   const rollDiceOnTap = () => {
-    let randomNumber = Math.floor(Math.random() * 6) + 1;
-    switch (randomNumber) {
-      case 1:
-        setDiceImage(DiceOne);
-        break;
-      case 2:
-        setDiceImage(DiceTwo);
-        break;
-      case 3:
-        setDiceImage(DiceThree);
-        break;
-      case 4:
-        setDiceImage(DiceFour);
-        break;
-      case 5:
-        setDiceImage(DiceFive);
-        break;
-      case 6:
-        setDiceImage(DiceSix);
-        break;
-      default:
-        setDiceImage(DiceOne);
-    }
+    const randomNumber = Math.floor(Math.random() * 6);
+    setDiceImage(diceImages[randomNumber]);
     // Trigger haptic feedback on dice roll
     ReactNativeHapticFeedback.trigger("impactLight", hapticOptions);
   }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Random Dice</Text>
       <Dice imageUrl={diceImage} />
-      <Pressable onPress={rollDiceOnTap} style={({ pressed }) => [
-        styles.rollDiceBtn,
-        pressed && styles.rollDiceBtnPressed
-      ]}>
+      <Pressable
+        onPress={rollDiceOnTap}
+        style={({ pressed }) => [
+          styles.rollDiceBtn,
+          pressed && styles.rollDiceBtnPressed
+        ]}
+        accessibilityLabel="Roll the dice"
+        accessibilityRole="button"
+      >
         <Text style={styles.rollDiceBtnText}>Roll the Dice</Text>
       </Pressable>
     </View>
